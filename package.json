@@ -1,0 +1,24 @@
+{
+  "name": "jsxlsxdemo",
+  "version": "1.0.0",
+  "description": "A demo of how to use JSXlsxSaver",
+  "main": "node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jifengg/JSXlsxDemo.git"
+  },
+  "author": "jifengg",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/jifengg/JSXlsxDemo/issues"
+  },
+  "homepage": "https://github.com/jifengg/JSXlsxDemo#readme",
+  "dependencies": {
+    "file-saver": "^2.0.1",
+    "request": "^2.88.0",
+    "xlsx-saver": "^1.0.2"
+  }
+}
