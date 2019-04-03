@@ -4,13 +4,23 @@
     }
     const request = require('request');
     let XlsxCore = require('js-xlsx-core');
-    require('xlsx-saver')
+    require('xlsx-saver');
     if (typeof global == 'undefined') {
         XlsxCore = window.XlsxCore;
     }
-    let Book = XlsxCore.Book;
-    let HorizontalAlignment = XlsxCore.HorizontalAlignment;
-    let VerticalAlignment = XlsxCore.VerticalAlignment;
+    const {
+        Book,
+        Sheet,
+        Cell,
+        ShareString,
+        CellStyle,
+        CellAlignment,
+        NumberFormat,
+        Image,
+        ImageOption,
+        HorizontalAlignment,
+        VerticalAlignment
+    } = XlsxCore;
 
     async function xlsxDemo() {
         var book = new Book();
@@ -205,15 +215,21 @@
         //添加图片
         var img = null;
         if (typeof global != 'undefined') {
-            sheet.SetRowHeight(row, 80);
             var imgData = await get('https://avatars0.githubusercontent.com/u/17020523?s=120&v=4');
             img = book.CreateImage(imgData, {
                 Format: 'jpg',
                 Type: 'buffer'
             });
-            sheet.AddImage(img, row++, col, 66, 66);
-            sheet.AddImage(img, row++, col, 33, 22);
+        } else {
+            var imgData = '/9j/2wCEAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDIBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/AABEIAB4AHgMBIgACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/AMMXOcAcnpWvFo2rtaNd/YZhCvJZhtOPXB5x71oeHtW0Sz0KzvTNbWtwqMkoJG5nBxk4BcgjBwMDn8um0HUzr1jc7DO1oq+UjtHtDDBB2gkk/Un8OteXmPEuKw7k6dC0IuzlK+uttLaX+b7mVHBwklzS1fRHNXMSHSIZIbRhLENs8mwjkE5z+lZ8UpPA5rvX8O2zWa26tchDndyMk9yT36/jXD6pYS6HfvESxjP+rkPcen1rsybiGhmFSVFO0t0u6/z/AEIxWFlSipfecK1kqnBaRP8AeSu18CeJodASe0v5We3cgxumW2dcjHoc54759a0heeH5Dh9MljJ/55kY/nWpbaRpd3ARaxmPcMfvIUP8q9LM8NSxuFlQrLR/mtjDDVfZ1Yyvp19OprSfEHw6bRCqToWwBKY3wSOuOMdq898Q6pLreqvcQo4twAqKT198dif8Ktp4P1CFoVnvYXittzNHglQASRgEYOST1qlJ4eCHCXb491/+vXj5Hg6Ptnin8SSS2WjV9klunue3xAsLScaWEm5J3v8AJ27Lsf/Z';
+            img = book.CreateImage(imgData, {
+                Format: 'png',
+                Type: 'base64'
+            });
         }
+        sheet.SetRowHeight(row, 80);
+        sheet.AddImage(img, row++, col, 66, 66);
+        sheet.AddImage(img, row++, col, 33, 22);
 
         //添加第二页
         var sheet2 = book.CreateSheet('第二页');
@@ -230,9 +246,7 @@
         sheet2.AddText(shareString, row++, col);
 
         //把第一页的图片添加到第二页
-        if (typeof global != 'undefined') {
-            sheet2.AddImage(img, row++, col, 33, 22);
-        }
+        sheet2.AddImage(img, row++, col, 33, 22);
 
         return book;
     }
