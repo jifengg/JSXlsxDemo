@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/jifengg/JSXlsxDemo#readme",
   "dependencies": {
+    "js-xlsx-core": "^1.0.3",
     "request": "^2.88.0",
-    "xlsx-saver": "^1.0.2"
+    "xlsx-saver": "^1.0.5"
   }
 }
